@@ -6,3 +6,4 @@
 target/
 .DS_Store
 .gitattributes
+phantomjs-2.1.1-windows
