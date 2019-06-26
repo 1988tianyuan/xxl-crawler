@@ -42,7 +42,7 @@ public class XxlCrawlerTest08 {
          *
          * http://phantomjs.org/download.html
          */
-        String driverPath = "/Users/xuxueli/Downloads/phantomjs-2.1.1-macosx/bin/phantomjs";
+        String driverPath = "F:\\学习\\刘耕的编程文件夹\\实践\\xxl-crawler\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe";
 
 
         // 构造爬虫
