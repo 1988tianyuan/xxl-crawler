@@ -3,7 +3,6 @@ package com.xuxueli.crawler.test;
 import com.xuxueli.crawler.XxlCrawler;
 import com.xuxueli.crawler.annotation.PageFieldSelect;
 import com.xuxueli.crawler.annotation.PageSelect;
-import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import com.xuxueli.crawler.parser.PageParser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,24 +14,36 @@ import org.jsoup.nodes.Element;
  */
 public class XxlCrawlerTest {
 
-    @PageSelect(cssQuery = "body")
+    @PageSelect(cssQuery = "#search-projects-ulist .project")
     public static class PageVo {
 
-        @PageFieldSelect(cssQuery = "#js-initialData", selectType = XxlCrawlerConf.SelectType.HTML)
-        private String initialData;
+        @PageFieldSelect(cssQuery = ".repository")
+        private String repository;
 
-        public String getInitialData() {
-            return initialData;
+        @PageFieldSelect(cssQuery = ".description")
+        private String description;
+
+        public String getRepository() {
+            return repository;
         }
 
-        public void setInitialData(String initialData) {
-            this.initialData = initialData;
+        public void setRepository(String repository) {
+            this.repository = repository;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
         }
 
         @Override
         public String toString() {
             return "PageVo{" +
-                    "initialData='" + initialData + '\'' +
+                    "repository='" + repository + '\'' +
+                    ", description='" + description + '\'' +
                     '}';
         }
     }
@@ -40,13 +51,15 @@ public class XxlCrawlerTest {
     public static void main(String[] args) {
 
         XxlCrawler crawler = new XxlCrawler.Builder()
-                .setUrls("https://www.zhihu.com/search?type=content&q=长腿")
-                .setAllowSpread(false)
+                .setUrls("https://gitee.com/xuxueli0323/projects?page=1")
+                .setWhiteUrlRegexs("https://gitee\\.com/xuxueli0323/projects\\?page=\\d+")
+                .setThreadCount(3)
                 .setPageParser(new PageParser<PageVo>() {
                     @Override
                     public void parse(Document html, Element pageVoElement, PageVo pageVo) {
                         // 解析封装 PageVo 对象
-                        System.out.println("数据是：" + pageVo.getInitialData());
+                        String pageUrl = html.baseUri();
+                        System.out.println(pageUrl + "：" + pageVo.toString());
                     }
                 })
                 .build();
